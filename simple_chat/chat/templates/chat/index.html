@@ -1,0 +1,60 @@
+<ul>
+	{% if logged_username %}
+		<form action="{% url 'send_message' %}" method="POST">
+			{% csrf_token %}
+			<ul>
+				<li>		
+					<label>
+						Username: {{ logged_username }}
+					</label>
+				</li>
+				<li>
+					<label>
+						Message:
+					</label>
+					<input type="text" name="message">
+				</li>
+				<input type="submit" value="Send">
+				<a href="logout">Logout</a>
+				{% if warning %}
+					<li>
+						<label>
+							{{ warning }}
+						</label>
+					</li>
+				{% endif %}
+			</ul>
+		</form>
+	{% else %}
+		<form action="{% url 'login' %}" method="POST">
+			{% csrf_token %}
+			<ul>
+				<li>		
+					<label>
+						Username:
+					</label>
+					<input type="text" name="username">
+				</li>
+				<li>
+					<label>
+						Password:
+					</label>
+					<input type="text" name="password">
+				</li>
+				<input type="submit" value="Login/Register">
+				{% if warning %}
+					<li>
+						<label>
+							{{ warning }}
+						</label>
+					</li>
+				{% endif %}
+			</ul>
+		</form>
+	{% endif %}
+	{% for message in messages %}
+		<li>
+			{{ message.username }} [{{ message.datetime }}]: {{ message.text }}
+		</li>
+	{% endfor %}
+</ul>
